@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShootOut!</title>
+
+<style>
+  body { background-color: black}
+  #FrameLable,#ShotLable {color: silver; font-size: 5em; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif, Helvetica, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+  #FrameTimerSpan,#ShotTimerSpan {color: silver; font-size: 5em; font-family: Arial, Helvetica, sans-serif;}
+  #FrameStartStopButton,#FrameRestartButton,#ShotStartStopButton,#ShotButton {background-color: slategrey; color: black; font-size: 5em; font-family: Arial, Helvetica, sans-serif;}
+</style>
+
+<script>
+var frameTime=600
+var shotTime=15
+var frameOn=false
+var shotOn=false
+setInterval(gameplay,100)
+
+function gameplay() {
+  if(frameOn){
+    document.getElementById("FrameStartStopButton").value = "Pause Frame"
+    document.getElementById("ShotStartStopButton").style.visibility = "visible"
+    document.getElementById("ShotButton").style.visibility = "visible"
+    document.getElementById("FrameRestartButton").style.visibility = "hidden"
+      if(frameTime > 0){
+        frameTime = frameTime - 0.1
+        minutes = Math.trunc(frameTime/60)
+        seconds = Math.trunc(frameTime - minutes*60)
+        if (seconds < 10) {seconds = "0" + seconds}
+        document.getElementById("FrameTimerSpan").innerHTML = minutes + ":" + seconds 
+          if (shotOn) {
+            if (shotTime > 0.) {
+              shotTime = shotTime - 0.1
+              document.getElementById("ShotTimerSpan").innerHTML = Math.trunc(shotTime)
+            }
+            else {
+              document.getElementById("ShotTimerSpan").innerHTML = "Foul 5 points!"
+              document.getElementById("ShotTimerSpan").style.color = "red"
+              document.getElementById("ShotButton").style.visibility = "hidden"
+            }
+          }
+          else {
+            document.getElementById("ShotButton").style.visibility = "hidden"
+               }
+          }
+      }
+  else {
+    minutes = Math.trunc(frameTime/60)
+    seconds = Math.trunc(frameTime - minutes*60)
+    if (seconds < 10) {seconds = "0" + seconds}
+    document.getElementById("FrameTimerSpan").innerHTML = minutes + ":" + seconds 
+    document.getElementById("ShotTimerSpan").innerHTML =Math.trunc(shotTime)
+    document.getElementById("FrameStartStopButton").value = "Resume Frame"
+    document.getElementById("ShotStartStopButton").style.visibility = "hidden"
+    document.getElementById("FrameRestartButton").style.visibility = "visible"
+  }
+}
+</script>    
+</head>
+
+<body>
+
+  <span id="FrameLable">Frame time:</span>
+  <span id="FrameTimerSpan">10:00</span><p>
+  <input id="FrameStartStopButton" type="button" value="Start Frame" onclick="frameOn= !frameOn;shotOn = !shotOn">
+  <input id="FrameRestartButton" type="button" value="ReStart Frame" onclick="frameTime=600;shotTime=15"></p>
+  <hr>
+  <span id="ShotLable">Shot time:</span>
+  <span id="ShotTimerSpan"></span><p>
+  <input id="ShotButton" type="button" value="Shot!" onclick="shotOn = false">
+  <input id="ShotStartStopButton" type="button" value="Start Shot" onclick="shotOn =!shotOn;if(frameTime>300){shotTime=15}else{shotTime=10}">
+  
+  
+</body>
+</html>
