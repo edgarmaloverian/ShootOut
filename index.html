@@ -1,126 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>ShootOut!</title>
+  <meta charset="UTF-8">
+  <title>ShootOut!</title>
 
-<style>
-  body { background-color: black}
-  #FrameLable,#ShotLable {color: silver; font-size: 5em; font-family: monospace}
-  #FrameTimerSpan,#ShotTimerSpan {color: silver; font-size: 5em; font-family: monospace}
-  #FrameStartStopButton,#FrameRestartButton,#ShotStartStopButton,#ShotButton {background-color: slategrey; color: black; font-size: 5em; font-family: monospace}
-</style>
-
-<script>
-// Initialize state
-var frameOn=false // frame is either in play or stopped 
-var shotOn=false // shot countdown may be running or paused any state transition leads to resetting counter to 15 or 10
-var shotFoulBeep = new Audio('Wrong-alert-beep-sound.mp3')
-var shotWarningBeep = new Audio('Blooper-sound-effect.mp3')
-setInterval(gameplay,100)
-
-function gameplay() {
-  if(frameOn){
-    document.getElementById("FrameStartStopButton").style.visibility = "hidden" // this monster is unstoppable!  
-    document.getElementById("ShotStartStopButton").style.visibility = "visible" 
-    document.getElementById("ShotButton").style.visibility = "visible"
-
-    if (frameTime > 300) {                                                      // colorizing frame timer
-      document.getElementById("FrameTimerSpan").style.color = "green"
-    } 
-    else if (frameTime > 5) {
-      shotLimit = 10
-      document.getElementById("FrameTimerSpan").style.color = "yellow"
-    }
-    else {
-      document.getElementById("FrameTimerSpan").style.color = "red"
+  <style>
+    body {
+      background-color: black
     }
 
-    if (shotTime > 5) {                                                       // colorizing shot timer
-      document.getElementById("ShotTimerSpan").style.color = "green"
-    }
-    else {
-      document.getElementById("ShotTimerSpan").style.color = "red"
-    }
-
-    if(frameTime > 0){                                                        // frame countdown timer
-      frameTime = frameTime - 0.1
-      minutes = Math.trunc(frameTime/60)
-      seconds = Math.trunc(frameTime - minutes*60)
-      if (seconds < 10) {seconds = "0" + seconds}
-      document.getElementById("FrameTimerSpan").innerHTML = minutes + ":" + seconds
-    }
-    else {frameOn = false
-    }
-    
-    if (shotOn) {                                                                 // shot countdown timer
-       if (shotTime > 0) {
-         shotTime = shotTime - 0.1
-         shotSeconds = Math.trunc(shotTime)
-         shotDecimals = Math.trunc(shotTime * 10) - Math.trunc(shotTime) * 10
-         document.getElementById("ShotTimerSpan").innerHTML = shotSeconds + "." + shotDecimals
-       }
-       else {
-         shotFoulBeep.play()
-         document.getElementById("ShotTimerSpan").innerHTML = "Foul 5 points!"
-         document.getElementById("ShotTimerSpan").style.color = "red"
-         document.getElementById("ShotButton").style.visibility = "hidden"
-         shotOn = false
-       }
-    }
-    else {
-       document.getElementById("ShotButton").style.visibility = "hidden"
+    #FrameLable,
+    #ShotLable {
+      color: silver;
+      font-size: 5em;
+      font-family: monospace
     }
 
-    if (shotOn) { // wanrning beeps
-      if (shotTime < 5.1 && shotTime > 4.99) {
-             shotWarningBeep.play()
+    #FrameTimerSpan,
+    #ShotTimerSpan {
+      color: silver;
+      font-size: 5em;
+      font-family: monospace
+    }
+
+    #FrameStartStopButton,
+    #FrameRestartButton,
+    #ShotStartStopButton,
+    #ShotButton {
+      background-color: slategrey;
+      color: black;
+      font-size: 5em;
+      font-family: monospace
+    }
+  </style>
+
+  <script>
+    // Initialize state
+    var frameOn = false // frame is either in play or stopped
+    var shotOn =
+      false // shot countdown may be running or paused any state transition leads to resetting counter to 15 or 10
+    var shotFoulBeep = new Audio('Wrong-alert-beep-sound.mp3')
+    var shotWarningBeep = new Audio('Blooper-sound-effect.mp3')
+    setInterval(gameplay, 100)
+
+    function gameplay() {
+      if (frameOn) {
+        document.getElementById("FrameStartStopButton").style.visibility = "hidden" // this monster is unstoppable!  
+        document.getElementById("ShotStartStopButton").style.visibility = "visible"
+        document.getElementById("ShotButton").style.visibility = "visible"
+
+        if (frameTime > 300) { // colorizing frame timer
+          document.getElementById("FrameTimerSpan").style.color = "green"
+        } else if (frameTime > 5) {
+          shotLimit = 10
+          document.getElementById("FrameTimerSpan").style.color = "yellow"
+        } else {
+          document.getElementById("FrameTimerSpan").style.color = "red"
+        }
+
+        if (shotTime > 5) { // colorizing shot timer
+          document.getElementById("ShotTimerSpan").style.color = "green"
+        } else {
+          document.getElementById("ShotTimerSpan").style.color = "red"
+        }
+
+        if (frameTime > 0) { // frame countdown timer
+          frameTime = frameTime - 0.1
+          minutes = Math.trunc(frameTime / 60)
+          seconds = Math.trunc(frameTime - minutes * 60)
+          if (seconds < 10) {
+            seconds = "0" + seconds
+          }
+          document.getElementById("FrameTimerSpan").innerHTML = minutes + ":" + seconds
+        } else {
+          frameOn = false
+        }
+
+        if (shotOn) { // shot countdown timer
+          if (shotTime > 0) {
+            shotTime = shotTime - 0.1
+            shotSeconds = Math.trunc(shotTime)
+            shotDecimals = Math.trunc(shotTime * 10) - Math.trunc(shotTime) * 10
+            document.getElementById("ShotTimerSpan").innerHTML = shotSeconds + "." + shotDecimals
+          } else {
+            shotFoulBeep.play()
+            document.getElementById("ShotTimerSpan").innerHTML = "Foul 5 points!"
+            document.getElementById("ShotTimerSpan").style.color = "red"
+            document.getElementById("ShotButton").style.visibility = "hidden"
+            shotOn = false
+          }
+        } else {
+          document.getElementById("ShotButton").style.visibility = "hidden"
+        }
+
+        if (shotOn) { // wanrning beeps
+          if (shotTime < 5.1 && shotTime > 4.99) {
+            shotWarningBeep.play()
+          }
+          if (shotTime < 4.1 && shotTime > 3.99) {
+            shotWarningBeep.play()
+          }
+          if (shotTime < 3.1 && shotTime > 2.99) {
+            shotWarningBeep.play()
+          }
+          if (shotTime < 2.1 && shotTime > 1.99) {
+            shotWarningBeep.play()
+          }
+          if (shotTime < 1.1 && shotTime > 0.99) {
+            shotWarningBeep.play()
+          }
+
+        }
+
+
+
+      } // end of FrameOn block
+      else { // what happens if frame is switched into idle position
+        frameTime = 600 // recreate initial state
+        shotTime = 15 // recreate initial state
+        shotLimit = 15
+        document.getElementById("FrameTimerSpan").innerHTML = "Ready?"
+        document.getElementById("FrameTimerSpan").style.color = "red"
+        document.getElementById("ShotStartStopButton").style.visibility = "hidden" // shot controls make no sense
+        document.getElementById("ShotButton").style.visibility = "hidden" // shot controls make no sense
+        document.getElementById("FrameStartStopButton").style.visibility = "visible"
+        document.getElementById("FrameStartStopButton").value = "Start!"
       }
-      if (shotTime < 4.1 && shotTime > 3.99) {
-           shotWarningBeep.play()
-      }
-      if (shotTime < 3.1 && shotTime > 2.99) {
-           shotWarningBeep.play()
-      }
-      if (shotTime < 2.1 && shotTime > 1.99) {
-           shotWarningBeep.play()
-      }
-      if (shotTime < 1.1 && shotTime > 0.99) {
-           shotWarningBeep.play()
-      }
-
-    } 
-
-     
-    
-  } // end of FrameOn block
-  else { // what happens if frame is switched into idle position
-    frameTime = 600                                                                 // recreate initial state
-    shotTime = 15                                                                   // recreate initial state
-    shotLimit = 15
-    document.getElementById("FrameTimerSpan").innerHTML = "Ready?" 
-    document.getElementById("FrameTimerSpan").style.color = "red"
-    document.getElementById("ShotStartStopButton").style.visibility = "hidden"      // shot controls make no sense
-    document.getElementById("ShotButton").style.visibility = "hidden"               // shot controls make no sense
-    document.getElementById("FrameStartStopButton").style.visibility = "visible"
-    document.getElementById("FrameStartStopButton").value = "Start!"
-  }
-}
-</script>    
+    }
+  </script>
 </head>
 
 <body>
 
   <span id="FrameLable">Frame time:</span>
-  <span id="FrameTimerSpan">10:00</span><p>
-  <input id="FrameStartStopButton" type="button" value="Start Frame" onclick="frameOn= !frameOn;shotOn = !shotOn">
-  <!-- <input id="FrameRestartButton" type="button" value="ReStart Frame" onclick="frameTime=600;shotTime=15"></p> -->
-  <hr>
-  <span id="ShotLable">Shot time:</span>
-  <span id="ShotTimerSpan"></span><p>
-  <input id="ShotButton" type="button" value="Shot!" onclick="shotOn = false">
-  <input id="ShotStartStopButton" type="button" value="Start Shot" onclick="shotTime=shotLimit;shotOn = true">
-  
-  
+  <span id="FrameTimerSpan">10:00</span>
+  <p>
+    <input id="FrameStartStopButton" type="button" value="Start Frame" onclick="frameOn= !frameOn;shotOn = !shotOn">
+    <!-- <input id="FrameRestartButton" type="button" value="ReStart Frame" onclick="frameTime=600;shotTime=15"></p> -->
+    <hr>
+    <span id="ShotLable">Shot time:</span>
+    <span id="ShotTimerSpan"></span>
+    <p>
+      <input id="ShotButton" type="button" value="Shot!" onclick="shotOn = false">
+      <input id="ShotStartStopButton" type="button" value="Start Shot" onclick="shotTime=shotLimit;shotOn = true">
+
+
 </body>
+
 </html>
