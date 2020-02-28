@@ -1,4 +1,6 @@
 {
     "git.autofetch": true,
-    "git.enableCommitSigning": true
+    "git.enableCommitSigning": true,
+    "html.validate.scripts": true,
+    "html.validate.styles": true
 }
